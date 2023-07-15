@@ -61,8 +61,8 @@ async function filesToBuffers(af) {
   console.log(af)
   let bufferArray = []
     //load file
-  for (let file of af) {
-    console.log("loading ", file)
+  for (let [index, file] of af.entries()) {
+    document.getElementById("loading").textContent = `loading file ${index + 1} of ${af.length}`
     // let song = "/folksongs/audio" + choice + ".mp3"
     let file_gh = "https://raw.githubusercontent.com/sebastianadams-music/webaudio-spatialisation/master/" + file //makes the file work for github pages
     const audioBuffer = await fetch(file_gh)
@@ -71,6 +71,7 @@ async function filesToBuffers(af) {
   .then(console.log(file_gh, " loaded"))
   bufferArray.push(audioBuffer)
   } 
+  document.getElementById("loading").textContent = ""
   return bufferArray
   
   }
