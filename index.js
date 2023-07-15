@@ -2,16 +2,15 @@
 const numberFiles = ["/sounds/1.wav", "/sounds/2.wav", "/sounds/3.wav", "/sounds/4.wav", "/sounds/5.wav", "/sounds/6.wav", "/sounds/7.wav", "/sounds/8.wav"]
 var vincent = ["/sounds/vi_snd_11_5aptRome_outsideChild.mp3", "/sounds/vi_snd_11_5Fire_sausage.mp3", "/sounds/vi_snd_11_5forge-230215-000.mp3", "/sounds/vi_snd_11_5In_Water.mp3", "/sounds/vi_snd_11_5metro-230219-000.mp3", "/sounds/vi_snd_11_5Tree_percussion.mp3", "/sounds/vi_snd_11_5walk_mainArea.mp3"]
 const outfoxing = ["/outfoxing.mp3", "/outfoxing.mp3", "/outfoxing.mp3", "/outfoxing.mp3", "/outfoxing.mp3", "/outfoxing.mp3", "/outfoxing.mp3", "/outfoxing.mp3"]
-const u2 = ["/sounds/u2-01.mp3", "/sounds/u2-02.mp3", "/sounds/u2-03.mp3", "/sounds/u2-04.mp3", "/sounds/u2-05.mp3", "/sounds/u2-06.mp3", "/sounds/u2-07.mp3", "/sounds/u2-08.mp3", ]
+const u2 = ["/sounds/u2-01.mp3", "/sounds/u2-02.mp3", "/sounds/u2-03.mp3", "/sounds/u2-04.mp3", "/sounds/u2-05.mp3", "/sounds/u2-06.mp3", "/sounds/u2-07.mp3", "/sounds/u2-08.mp3"]
 let audioFiles = u2
 
-const preLoadedFiles = async audioFiles => {await filesToBuffers(audioFiles).then(console.log("loaded")) }
+const preLoadFiles = async (files) => {let preLoadedFiles = await filesToBuffers(files); return preLoadedFiles }
 
 // set up click event for trigger script
 document.querySelector('#start').onclick = () => audioPlay(audioFiles);
 document.querySelector('#auto').onclick = () => autoMoveListener();
-
-
+window.onload = audioFiles => preLoadFiles(u2)
 // scale all distances 
 const distanceScale = 250
 const numberOfRadios = 32
@@ -54,15 +53,18 @@ const audioPlay = async preLoadedFiles => {
 
 // functions
 
-async function filesToBuffers(audioFiles) {
+async function filesToBuffers(af) {
+  console.log(af)
   let bufferArray = []
     //load file
-  for (let file of audioFiles) {
+  for (let file of af) {
+    console.log("loading ", file)
     // let song = "/folksongs/audio" + choice + ".mp3"
     let file_gh = "https://raw.githubusercontent.com/sebastianadams-music/webaudio-spatialisation/master/" + file //makes the file work for github pages
     const audioBuffer = await fetch(file_gh)
   .then(res => res.arrayBuffer())
-  .then(ArrayBuffer => context.decodeAudioData(ArrayBuffer));
+  .then(ArrayBuffer => context.decodeAudioData(ArrayBuffer))
+  .then(console.log(file_gh, " loaded"))
   bufferArray.push(audioBuffer)
   } 
   return bufferArray
@@ -315,3 +317,4 @@ function isInside(circle_x, circle_y, rad, x, y)
     else
         return false;
 }
+
