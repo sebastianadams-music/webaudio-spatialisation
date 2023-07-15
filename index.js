@@ -5,6 +5,8 @@ const outfoxing = ["/outfoxing.mp3", "/outfoxing.mp3", "/outfoxing.mp3", "/outfo
 const u2 = ["/sounds/u2-01.mp3", "/sounds/u2-02.mp3", "/sounds/u2-03.mp3", "/sounds/u2-04.mp3", "/sounds/u2-05.mp3", "/sounds/u2-06.mp3", "/sounds/u2-07.mp3", "/sounds/u2-08.mp3", ]
 let audioFiles = u2
 
+const preLoadedFiles = async audioFiles => {await filesToBuffers(audioFiles).then(console.log("loaded")) }
+
 // set up click event for trigger script
 document.querySelector('#start').onclick = () => audioPlay(audioFiles);
 document.querySelector('#auto').onclick = () => autoMoveListener();
@@ -34,8 +36,8 @@ this.sources = sources
 this.receivers = receivers
 
 // this trigger function called when the play button is pressed initially
-const audioPlay = async audioFiles => {
-  let audioBuffers = await filesToBuffers(audioFiles)
+const audioPlay = async preLoadedFiles => {
+  let audioBuffers = await filesToBuffers(preLoadedFiles)
 // create sources
   for (let i = 0; i < 8; i++){
     sources.push(createSource(audioBuffers[i], panners[i]))
