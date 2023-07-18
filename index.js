@@ -59,7 +59,7 @@ const audioPlay = async bufs => {
     sources[i].connect(channels[i])
   }
   
-// create receivers and panners
+// create receivers and panners.
   for (let i = 0; i < numberOfRadios; i++){
     panners.push(newPannerNode()) 
     console.log(channels)
